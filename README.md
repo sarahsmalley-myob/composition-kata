@@ -73,8 +73,27 @@ some time to reflect on the different approaches.
 
 ## Find answers yourself
 
--   Which are the drawbacks and benefits to each?
+-  ## Which are the drawbacks and benefits to each?
 
--   Which one would you rather build on in the future?
+### Inheritance
+<b>Drawback</b>: The hierarchy of inherited classes can get quite convoluted- it is already 3 levels deep - for example. HighPassSummingAggregator inherits SummingAggregator which inherits PointsAggregator.
 
--   Which one achieves better "reusability"?
+<b>Benefit</b>: Can prevent some code duplication, and I didn't have to implement all inherited methods, just the ones that I needed to override.
+
+### Composition
+<b>Drawback</b>: I had to write an extra class (HighPassSummingAggregator) to hide the use of filters and strategies. Without this class the user also has to research the filters and strategies to find out which they want to use, while for inheritance it is in the name of the class.
+
+<b>Benefit</b>: It is much more flexible and easier to change over time.
+
+-   ## Which one would you rather build on in the future?
+
+<b>Composition</b>. For example, if I want to use a HighPassFilter and AveragingStrategy, it is as simple as giving those two parameters to the PointsAggregator. It is also simple to create new Filters and Strategies by implementing the corresponding interfaces with new classes.
+
+If you were using Inheritance, to make a HighPass AveragingAggregator you would have to create a new HighPassAveragingAggregator which would likely inherit AveragingAggregator which inherits PointsAggregator. And this is not good because it just repeats the HighPass logic that is used.
+
+-  ## Which one achieves better "reusability"?
+
+<b>Composition</b>. As described above, to reuse the same filter on a lot of different strategies it is as simple as using the one filter class in the PointAggregator.
+
+Whereas with inheritance, you need to make a new class every time, which repeats the same logic for the same filter. Of course you could look at changing the inheritance, or introducing the filter to be inherited somewhere, but this will get more complicated over time.
+
